@@ -23,6 +23,7 @@ jobs:
         ls -l
         bottle="$(ls *.tar.gz | head -n 1)"
         mv "$bottle" "${bottle/--/-}"
+      displayName: Build bottle
       env:
         TAG: $(versionTag)
     - task: CopyFiles@2
@@ -33,9 +34,8 @@ jobs:
       inputs:
         gitHubConnection: 'release'
         repositoryName: '$(Build.Repository.Name)'
-        action: 'create'
+        action: 'edit'
         target: '$(Build.SourceVersion)'
-        tagSource: 'auto'
         tag: '$(versionTag)'
         assets: '$(Build.ArtifactStagingDirectory)/*'
         assetUploadMode: 'replace'
