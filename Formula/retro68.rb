@@ -7,7 +7,8 @@ class Retro68 < Formula
   bottle do
     root_url "https://github.com/easybe/homebrew-retro68/releases/download/v2019.9.1"
     cellar :any_skip_relocation
-    sha256 "815d47429f01353d310c359677f93fff137452f030084dcdc6d5fcfe69ebbee3" => :high_sierra
+    sha256 "ad51d12d628d91a2512f2f52d9fbc69d3e15306475ffae279ade9f967fef19a5" => :high_sierra
+    sha256 "c277393ba1aafc926ee8f5a9ce90fc65e6a47ac9d9c6e55d7aa6727b4a81b84d" => :mojave
   end
 
   MPW_URL = "https://staticky.com/mirrors/ftp.apple.com/developer/Tool_Chest/Core_Mac_OS_Tools/MPW_etc./MPW-GM_Images/MPW-GM.img.bin"
