@@ -1,0 +1,41 @@
+parameters:
+  name: ''
+  vmImage: ''
+  xcode: ''
+jobs:
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+    - bash: echo "##vso[task.setvariable variable=versionTag]$(git describe --tags)"
+      displayName: Set versionTag variable
+    - bash: |
+        set -e
+        sudo xcode-select --switch /Applications/Xcode_${{ parameters.xcode }}.app/Contents/Developer
+        brew update
+        #HOMEBREW_TAP_DIR="/usr/local/Homebrew/Library/Taps/easybe/homebrew-retro68"
+        #mkdir -p "$HOMEBREW_TAP_DIR"
+        #rm -rf "$HOMEBREW_TAP_DIR"
+        #ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+        #brew test-bot
+        brew install --build-bottle --verbose Formula/retro68.rb
+        brew bottle --skip-relocation --force --verbose --root-url=https://github.com/easybe/homebrew-retro68/releases/download/$TAG Formula/retro68.rb
+        ls -l
+        bottle="$(ls *.tar.gz | head -n 1)"
+        mv "$bottle" "${bottle/--/-}"
+      env:
+        TAG: $(versionTag)
+    - task: CopyFiles@2
+      inputs:
+        contents: '*.tar.gz'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: 'release'
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'create'
+        target: '$(Build.SourceVersion)'
+        tagSource: 'auto'
+        tag: '$(versionTag)'
+        assets: '$(Build.ArtifactStagingDirectory)/*'
+        assetUploadMode: 'replace'
