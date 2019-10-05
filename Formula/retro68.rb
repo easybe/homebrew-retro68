@@ -16,7 +16,7 @@ class Retro68 < Formula
   end
 
   def install
-    Pathname.new("multiversal").install resource("multiversal")
+    (buildpath/"multiversal").install resource("multiversal")
     mkdir "build" do
       system "../build-toolchain.bash", "--prefix=#{prefix} --no-carbon"
     end
