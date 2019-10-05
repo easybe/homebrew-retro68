@@ -12,7 +12,7 @@ class Retro68 < Formula
 
   resource "multiversal" do
     url "https://github.com/easybe/multiversal/archive/v2019.10.0.tar.gz"
-    sha256 "fd61ceba2679f4d15cf5009e8fe95ed70a31f02e4bcf37930ee7d4e0"
+    sha256 "a20b62696963ea67ad9928fc94e266fc372b87446cde64ddf0d4876b324082dc"
   end
 
   def install
