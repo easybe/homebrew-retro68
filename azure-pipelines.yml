@@ -1,14 +1,8 @@
-trigger:
-  tags:
-    include:
-      - v*
 jobs:
 - job: macOS
   pool:
     vmImage: macOS-10.14
   steps:
-    - bash: echo "##vso[task.setvariable variable=versionTag]$(git describe --tags)"
-      displayName: Set versionTag variable
     - bash: |
         set -e
         sudo xcode-select --switch /Applications/Xcode_10.2.app/Contents/Developer
@@ -18,23 +12,6 @@ jobs:
         #rm -rf "$HOMEBREW_TAP_DIR"
         #ln -s "$PWD" "$HOMEBREW_TAP_DIR"
         #brew test-bot
-        brew install --build-bottle --verbose Formula/retro68.rb
-        brew bottle --skip-relocation --force --verbose Formula/retro68.rb
-        ls -l
-        bottle="$(ls *.tar.gz | head -n 1)"
-        mv "$bottle" "${bottle/--/-}"
-      displayName: Build bottle
-    - task: CopyFiles@2
-      inputs:
-        contents: '*.tar.gz'
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
-    - task: GitHubRelease@0
-      inputs:
-        gitHubConnection: 'release'
-        repositoryName: '$(Build.Repository.Name)'
-        action: 'create'
-        target: '$(Build.SourceVersion)'
-        tagSource: 'auto'
-        tag: '$(versionTag)'
-        assets: '$(Build.ArtifactStagingDirectory)/*'
-        assetUploadMode: 'replace'
+        brew install --verbose Formula/retro68.rb
+        brew test retro68
+      displayName: Test

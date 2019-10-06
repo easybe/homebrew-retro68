@@ -34,7 +34,7 @@ class Retro68 < Formula
     EOS
     cmake_files = [
       "#{prefix}/m68k-apple-macos/cmake/retro68.toolchain.cmake",
-      #"#{prefix}/powerpc-apple-macos/cmake/retrocarbon.toolchain.cmake",
+      "#{prefix}/powerpc-apple-macos/cmake/retrocarbon.toolchain.cmake",
       "#{prefix}/powerpc-apple-macos/cmake/retroppc.toolchain.cmake",
     ]
     cmake_files.each do |cmake_file|
